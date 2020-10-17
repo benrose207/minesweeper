@@ -2,11 +2,12 @@ import Tile from './tile';
 
 export default class Board {
   constructor() {
-    this.numBombs = 10;
+    this.numMines = 10;
     this.rows = 8;
     this.columns = 8;
 
     this.board = new Array(this.rows).fill(null).map(() => new Array(this.columns));
+
     this.addTiles();
     this.placeBombs();
   }
@@ -20,18 +21,17 @@ export default class Board {
   }
 
   placeBombs() {
-    let bombCount = 0;
+    let mineCount = 0;
 
-    while (bombCount < this.numBombs) {
+    while (mineCount < this.numMines) {
       const randomX = Math.floor(Math.random() * this.rows);
       const randomY = Math.floor(Math.random() * this.columns);
       const randomTile = this.board[randomX][randomY];
 
-      if (!randomTile.bomb) {
-        randomTile.bomb = true;
-        bombCount++;
+      if (!randomTile.isMine) {
+        randomTile.isMine = true;
+        mineCount++;
       }
     };
-    console.log(this.board);
   }
 }

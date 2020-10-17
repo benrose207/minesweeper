@@ -1,27 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import './assets/stylesheets/App.css';
-import Board from './utils/board';
+import Game from './components/game';
+import './assets/stylesheets/index.css';
 
 function App() {
-  const board = new Board();
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hi this is Ben
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Minesweeper</h1>
+      <Game />
     </div>
   );
 }
