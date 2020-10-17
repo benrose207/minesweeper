@@ -1,14 +1,17 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './assets/stylesheets/App.css';
+import Board from './utils/board';
 
 function App() {
+  const board = new Board();
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Hi this is Ben
         </p>
         <a
           className="App-link"
