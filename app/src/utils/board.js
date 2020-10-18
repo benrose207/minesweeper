@@ -7,9 +7,18 @@ export default class Board {
     this.columns = 8;
 
     this.board = new Array(this.rows).fill(null).map(() => new Array(this.columns));
+    this.adjCoords = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [1, 0],
+      [1, -1],
+      [1, 1],
+      [0, -1],
+      [0, 1]];
 
     this.addTiles();
-    this.placeBombs();
+    this.placeMines();
   }
 
   addTiles() {
@@ -20,7 +29,30 @@ export default class Board {
     }
   }
 
-  placeBombs() {
+  findNeighboringTiles(pos) {
+    const neighbors = [];
+    const [x, y] = pos;
+
+    this.adjCoords.forEach(coord => {
+      const newCoord = [coord[0] + x, coord[1] + y];
+      if (this.validPos(newCoord)) neighbors.push(this.board[newCoord[0]][newCoord[1]]);
+    });
+
+    return neighbors;
+  }
+
+  validPos(pos) {
+    return pos[0] >= 0 && pos[0] < this.rows && pos[1] >= 0 && pos[1] < this.columns;
+  }
+
+  updateAdjacentCounts(pos) {
+    const neighbors = this.findNeighboringTiles(pos);
+    neighbors.forEach(neighbor => {
+      if (!neighbor.isMine) neighbor.incrementCount();
+    })
+  }
+
+  placeMines() {
     let mineCount = 0;
 
     while (mineCount < this.numMines) {
@@ -29,7 +61,8 @@ export default class Board {
       const randomTile = this.board[randomX][randomY];
 
       if (!randomTile.isMine) {
-        randomTile.isMine = true;
+        randomTile.placeMine();
+        this.updateAdjacentCounts([randomX, randomY])
         mineCount++;
       }
     };

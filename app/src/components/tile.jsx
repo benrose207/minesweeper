@@ -1,10 +1,14 @@
 import React from 'react';
 
-const Tile = ({ tile }) => {
-  const tileValue = tile.isMine ? "💣" : "";
+const Tile = ({ tile, pos }) => {
+  const tileValue = tile.isMine ? "💣" : tile.numAdjMines ? tile.numAdjMines : "";
 
   return (
-    <div>{tileValue}</div>
+    <div className="tile" data-pos={pos}>
+      <span className="hidden">
+        {tileValue}
+      </span>
+    </div>
   );
 };
 
