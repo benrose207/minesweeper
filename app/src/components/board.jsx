@@ -1,38 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Tile from './tile';
 
 // better thing to use for the indexes here? 
 
-const BoardLayout = ({ board }) => {
+const BoardLayout = ({ board, update }) => {
   const tiles = board.map((row, idx1) => (
     <div key={idx1} className="row">
       {row.map((tile, idx2) => (
-        <Tile key={idx2} tile={tile} pos={`${idx1},${idx2}`}/>
+        <Tile key={idx2} tile={tile} pos={`${idx1},${idx2}`} update={update}/>
       ))}
     </div>
   ));
-
-  const revealTile = (e) => {
-    const pos = e.target.dataset.pos.split(',');
-    const tile = board[pos[0]][pos[1]];
-    tile.revealed = true;
-
-    const tileValue = e.target.firstElementChild;
-    if (tileValue.classList.contains('hidden')) {
-      tileValue.classList.remove('hidden');
-    }
-  };
-
-  const setFlag = (e) => {
-    e.preventDefault();
-    console.log('setting flag');
-  };
-
-  useEffect(() => {
-    const board = document.querySelector('.board');
-    board.addEventListener('click', revealTile);
-    board.addEventListener('contextmenu', setFlag);
-  })
 
   return (
     <div className="board">

@@ -24,7 +24,7 @@ export default class Board {
   addTiles() {
     for (let i = 0; i < this.board.length; i++) {
       for (let j = 0; j < this.board[0].length; j++) {
-        this.board[i][j] = new Tile();
+        this.board[i][j] = new Tile([i, j]);
       }
     }
   }
@@ -66,5 +66,27 @@ export default class Board {
         mineCount++;
       }
     };
+  }
+
+  exploreTiles(tile, board) {
+    if (tile.isMine || tile.numAdjMines > 0) return;
+    const queue = [tile];
+
+    while (queue.length) {
+      const currTile = queue.shift();
+      if (currTile.numAdjMines > 0) continue;
+
+      for (const coord of this.adjCoords) {
+        const newX = coord[0] + currTile.pos[0];
+        const newY = coord[1] + currTile.pos[1];
+        if (!this.validPos([newX, newY])) continue;
+
+        const newTile = board[newX][newY];
+        if (!newTile.isMine && !newTile.revealed && !newTile.flagged) {
+          newTile.revealed = true;
+          queue.push(newTile);
+        }
+      };
+    }
   }
 }
