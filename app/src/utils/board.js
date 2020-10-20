@@ -69,7 +69,10 @@ export default class Board {
   }
 
   exploreTiles(tile, board) {
-    if (tile.isMine || tile.numAdjMines > 0) return;
+    let numTilesExplored = 1;
+    tile.revealed = true;
+
+    if (tile.isMine || tile.numAdjMines > 0) return numTilesExplored;
     const queue = [tile];
 
     while (queue.length) {
@@ -84,9 +87,12 @@ export default class Board {
         const newTile = board[newX][newY];
         if (!newTile.isMine && !newTile.revealed && !newTile.flagged) {
           newTile.revealed = true;
+          numTilesExplored++;
           queue.push(newTile);
         }
       };
     }
+
+    return numTilesExplored;
   }
 }
