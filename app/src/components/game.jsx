@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createBoard, exploreTiles, revealBoard } from '../utils/board';
 import BoardLayout from './board';
-import Board from '../utils/board';
+import Counter from './counter';
+import Timer from './timer';
 
 // not sure about the way I'm updating the board. Have to pass a new object to useState to 
 // re-render board. But that means that it's different than this.board in the Board class.
 // Is there a better way? If not, do I really need the Board class at all, vs. just utility functions?
 
 const Game = () => {
-  const gameBoard = new Board();
-  const [board, updateBoard] = useState(gameBoard.board);
+  const [board, updateBoard] = useState(createBoard(8, 8, 10));
   const [minesFound, updateMinesFound] = useState(0);
   const [tilesRevealed, updateTilesRevealed] = useState(0);
+  const [gameStatus, updateGameStatus] = useState({ inProgress: true, restarted: false });
+  const gameOverMessage = useRef(null);
 
   const updateGame = (tile, flagToggled) => {
     if (flagToggled) {
@@ -18,7 +21,7 @@ const Game = () => {
     } else if (!tile.flagged) {
       if (tile.isMine) handleLost();
 
-      const numTilesExplored = gameBoard.exploreTiles(tile, board);
+      const numTilesExplored = exploreTiles(tile, board);
       updateTilesRevealed(tilesRevealed + numTilesExplored);
     }
 
@@ -32,24 +35,46 @@ const Game = () => {
   }
 
   const handleLost = () => {
-    alert('You lose!');
+    updateGameStatus({...gameStatus, inProgress: false});
+    gameOverMessage.current = "Try again!";
+    revealBoard(board);
+    updateBoard([...board]);
   }
 
-  const won = () => {
-    console.log(minesFound, tilesRevealed);
-    const allMinesFound = minesFound === gameBoard.numMines;
-    const allTilesRevealed = tilesRevealed === (gameBoard.rows * gameBoard.columns) - gameBoard.numMines;
-    return allMinesFound || allTilesRevealed;
+  const restart = () => {
+    updateMinesFound(0);
+    updateTilesRevealed(0);
+    gameOverMessage.current = null;
+
+    const newBoard = createBoard(8, 8, 10);
+    updateBoard(newBoard);
+    updateGameStatus({ inProgress: true, restarted: true});
   }
 
+  
   useEffect(() => {
-    if (won()) alert('You won!');
-  })
+    const won = () => {
+      const allMinesFound = minesFound === 10;
+      const allTilesRevealed = tilesRevealed === (board.length * board[0].length) - 10;
+      return allMinesFound || allTilesRevealed;
+    }
+
+    if (won() && gameStatus.inProgress) {
+      updateGameStatus({ ...gameStatus, inProgress: false });
+      gameOverMessage.current = "Congrats, you won!";
+    }
+  }, [gameStatus, board, minesFound, tilesRevealed]);
 
   return (
-    <main>
-      <BoardLayout board={board} update={updateGame}/>
-    </main>
+    <>
+      <div className="game-details">
+        <Counter minesFound={minesFound}/>
+        <button onClick={restart}>Restart</button>
+        <Timer gameStatus={gameStatus} />
+      </div>
+      <BoardLayout board={board} update={updateGame} />
+      <p className="gameover-message">{gameOverMessage.current}</p>
+    </>
   )
 };
 

@@ -1,11 +1,69 @@
-body {
-  font-size: 16px;
+:root {
+  --darkGrey: #1F1F1F;
+  --primaryBlack: #080808;
+  --lightGrey: rgba(64,66,69,.3);
+  --mediumGrey: #242424;
+  --white: #FFFFFF;
+  --primaryBlue: #15afd5;
+  --darkBlue: #0F3D67;
+  --mediumBlue: #4DB2D8;
+  --thirdBlue: #2D749B;
+  --lightBlue: #60D5F0;
 }
 
+body {
+  font-size: 16px;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  background-color: var(--darkGrey);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2rem;
+  color: var(--primaryBlue);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+/* Game Details/Actions */
+.game-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  margin: 1rem 0;
+  color: var(--primaryBlue);
+  font-weight: 600;
+  padding: 1.25rem;
+  border: 2px solid var(--white);
+  border-radius: 0.5rem;
+}
+
+button {
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  background-color: lightgray;
+  color: var(--primaryBlack);
+}
+
+button:hover {
+  background-color: rgb(228, 228, 228);
+}
+
+.gameover-message {
+  color: var(--primaryBlue);
+  margin: 1.5rem 0;
+  font-size: 1.75rem;
+}
 
 /* Board */
 .board {
-  border: 1px solid red;
+  border: 1px solid var(--primaryBlue);
   width: calc((2.2rem * 8) + 16px);
   margin: 0 auto;
 }
@@ -18,7 +76,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
+  border: 1px solid var(--primaryBlue);
   padding: 0.35rem;
   height: 1.5rem;
   width: 1.5rem;

@@ -1,98 +1,105 @@
 import Tile from './tile';
 
-export default class Board {
-  constructor() {
-    this.numMines = 10;
-    this.rows = 8;
-    this.columns = 8;
+const ADJCOORDS = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [1, 0],
+  [1, -1],
+  [1, 1],
+  [0, -1],
+  [0, 1]
+];
 
-    this.board = new Array(this.rows).fill(null).map(() => new Array(this.columns));
-    this.adjCoords = [
-      [-1, -1],
-      [-1, 0],
-      [-1, 1],
-      [1, 0],
-      [1, -1],
-      [1, 1],
-      [0, -1],
-      [0, 1]];
+const addTiles = (board) => {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      board[i][j] = new Tile([i, j]);
+    };
+  };
+};
 
-    this.addTiles();
-    this.placeMines();
-  }
+const findNeighboringTiles = (pos, board) => {
+  const neighbors = [];
+  const [x, y] = pos;
+  const rows = board.length;
+  const cols = board[0].length;
 
-  addTiles() {
-    for (let i = 0; i < this.board.length; i++) {
-      for (let j = 0; j < this.board[0].length; j++) {
-        this.board[i][j] = new Tile([i, j]);
-      }
+  ADJCOORDS.forEach(coord => {
+    const newCoord = [coord[0] + x, coord[1] + y];
+    if (validPos(newCoord, rows, cols)) neighbors.push(board[newCoord[0]][newCoord[1]]);
+  });
+
+  return neighbors;
+};
+
+const validPos = (pos, rows, cols) => {
+  return pos[0] >= 0 && pos[0] < rows && pos[1] >= 0 && pos[1] < cols;
+};
+
+const updateAdjacentCounts = (pos, board) => {
+  const neighbors = findNeighboringTiles(pos, board);
+  neighbors.forEach(neighbor => {
+    if (!neighbor.isMine) neighbor.incrementCount();
+  });
+};
+
+const placeMines = (board, numMines) => {
+  let mineCount = 0;
+
+  while (mineCount < numMines) {
+    const randomX = Math.floor(Math.random() * board.length);
+    const randomY = Math.floor(Math.random() * board[0].length);
+    const randomTile = board[randomX][randomY];
+
+    if (!randomTile.isMine) {
+      randomTile.placeMine();
+      updateAdjacentCounts([randomX, randomY], board)
+      mineCount++;
     }
-  }
+  };
+};
 
-  findNeighboringTiles(pos) {
-    const neighbors = [];
-    const [x, y] = pos;
+export const createBoard = (rows, columns, numMines) => {
+  const board = new Array(rows).fill(null).map(() => new Array(columns));
+  addTiles(board);
+  placeMines(board, numMines);
+  return board;
+};
 
-    this.adjCoords.forEach(coord => {
-      const newCoord = [coord[0] + x, coord[1] + y];
-      if (this.validPos(newCoord)) neighbors.push(this.board[newCoord[0]][newCoord[1]]);
-    });
+export const exploreTiles = (tile, board) => {
+  let numTilesExplored = 1;
+  tile.revealed = true;
 
-    return neighbors;
-  }
+  if (tile.isMine || tile.numAdjMines > 0) return numTilesExplored;
+  const queue = [tile];
 
-  validPos(pos) {
-    return pos[0] >= 0 && pos[0] < this.rows && pos[1] >= 0 && pos[1] < this.columns;
-  }
+  while (queue.length) {
+    const currTile = queue.shift();
+    if (currTile.numAdjMines > 0) continue;
 
-  updateAdjacentCounts(pos) {
-    const neighbors = this.findNeighboringTiles(pos);
-    neighbors.forEach(neighbor => {
-      if (!neighbor.isMine) neighbor.incrementCount();
-    })
-  }
+    for (const coord of ADJCOORDS) {
+      const newX = coord[0] + currTile.pos[0];
+      const newY = coord[1] + currTile.pos[1];
+      if (!validPos([newX, newY], board.length, board[0].length)) continue;
 
-  placeMines() {
-    let mineCount = 0;
-
-    while (mineCount < this.numMines) {
-      const randomX = Math.floor(Math.random() * this.rows);
-      const randomY = Math.floor(Math.random() * this.columns);
-      const randomTile = this.board[randomX][randomY];
-
-      if (!randomTile.isMine) {
-        randomTile.placeMine();
-        this.updateAdjacentCounts([randomX, randomY])
-        mineCount++;
+      const newTile = board[newX][newY];
+      if (!newTile.isMine && !newTile.revealed && !newTile.flagged) {
+        newTile.revealed = true;
+        numTilesExplored++;
+        queue.push(newTile);
       }
     };
   }
 
-  exploreTiles(tile, board) {
-    let numTilesExplored = 1;
-    tile.revealed = true;
+  return numTilesExplored;
+};
 
-    if (tile.isMine || tile.numAdjMines > 0) return numTilesExplored;
-    const queue = [tile];
-
-    while (queue.length) {
-      const currTile = queue.shift();
-      if (currTile.numAdjMines > 0) continue;
-
-      for (const coord of this.adjCoords) {
-        const newX = coord[0] + currTile.pos[0];
-        const newY = coord[1] + currTile.pos[1];
-        if (!this.validPos([newX, newY])) continue;
-
-        const newTile = board[newX][newY];
-        if (!newTile.isMine && !newTile.revealed && !newTile.flagged) {
-          newTile.revealed = true;
-          numTilesExplored++;
-          queue.push(newTile);
-        }
-      };
-    }
-
-    return numTilesExplored;
-  }
-}
+export const revealBoard = (board) => {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board.length; j++) {
+      const tile = board[i][j];
+      tile.revealed = true;
+    };
+  };
+};

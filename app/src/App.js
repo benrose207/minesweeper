@@ -5,10 +5,10 @@ import './assets/stylesheets/index.css';
 function App() {
 
   return (
-    <div className="App">
+    <main>
       <h1>Minesweeper</h1>
       <Game />
-    </div>
+    </main>
   );
 }
 
