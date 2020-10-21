@@ -1,14 +1,17 @@
 import React from 'react';
 
 const Tile = ({ tile, pos, update }) => {
-  let tileContent = "";
+  let tileBack = "";
+  let tileFront = "";
 
   if (tile.revealed && tile.isMine) {
-    tileContent = "💣";
+    tileBack = "💣";
   } else if (tile.revealed && tile.numAdjMines > 0) {
-    tileContent = tile.numAdjMines;
-  } else if (tile.flagged) {
-    tileContent = "🚩";
+    tileBack = tile.numAdjMines;
+  }
+  
+  if (tile.flagged) {
+    tileFront = "🚩";
   }
 
   const handleClick = (e) => {
@@ -24,9 +27,10 @@ const Tile = ({ tile, pos, update }) => {
       data-pos={pos}
       onClick={handleClick}
       onContextMenu={handleClick}>
-      <span>
-        {tileContent}
-      </span>
+      <div className={`tile-content-container${tile.revealed ? " is-flipped" : ""}`}>
+        <span className="tile-content tile-content--front">{tileFront}</span>
+        <span className="tile-content tile-content--back">{tileBack}</span>
+      </div>
     </div>
   );
 };

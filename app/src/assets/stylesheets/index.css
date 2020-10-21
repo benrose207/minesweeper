@@ -75,23 +75,45 @@ button:hover {
   display: flex;
 }
 
-.row > div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid var(--primaryBlue);
-  padding: 0.35rem;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
 .tile {
+  border: 1px solid var(--primaryBlue);
+  height: 2.2rem;
+  width: 2.2rem;
   background-color: lightGrey;
+  perspective: 600px;
 }
 
 .tile:hover {
   background-color: rgb(197, 197, 197);
 }
+
+.tile-content-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 1s cubic-bezier(0.13, 0.99, 0.85, 1);
+  transform-style: preserve-3d;
+}
+
+.tile-content-container.is-flipped {
+  transform: rotateY( 180deg );
+}
+
+.tile-content {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tile-content--back {
+  transform: rotateY( 180deg );
+}
+
+/* Credit to https://3dtransforms.desandro.com/card-flip for help on the card flipping animation */
 
 .revealed {
   background-color: white;
