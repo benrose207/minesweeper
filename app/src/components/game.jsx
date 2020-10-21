@@ -1,21 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createBoard, exploreTiles, revealBoard } from '../utils/board';
 import BoardLayout from './board';
 import Counter from './counter';
 import Timer from './timer';
 
-// not sure about the way I'm updating the board. Have to pass a new object to useState to 
-// re-render board. But that means that it's different than this.board in the Board class.
-// Is there a better way? If not, do I really need the Board class at all, vs. just utility functions?
+// Is there a better way to store/handle the Board itself and it's functions? Originally
+// had Board class in separate file, but was having trouble updating it with Hooks. 
+// Refactored to just have util functions, which works, but means I have to pass around variables more
+// often, and also doesn't allow me to store instance variables on the class (i.e. rows, cols, # mines)
 
 const Game = () => {
   const [board, updateBoard] = useState(createBoard(8, 8, 10));
   const [minesFound, updateMinesFound] = useState(0);
   const [tilesRevealed, updateTilesRevealed] = useState(0);
-  const [gameStatus, updateGameStatus] = useState({ inProgress: true, restarted: false });
+  const [gameStatus, updateGameStatus] = useState({ inProgress: false, restarted: false });
   const gameOverMessage = useRef(null);
 
   const updateGame = (tile, flagToggled) => {
+    if (!gameStatus.inProgress) updateGameStatus({ ...gameStatus, inProgress: true });
+
     if (flagToggled) {
       handleFlagToggle(tile);
     } else if (!tile.flagged) {
@@ -38,8 +41,12 @@ const Game = () => {
     updateGameStatus({...gameStatus, inProgress: false});
     gameOverMessage.current = "Try again!";
     revealBoard(board);
-    updateBoard([...board]);
   }
+
+  const handleWon = useCallback(() => {
+    updateGameStatus({ ...gameStatus, inProgress: false });
+    gameOverMessage.current = "Congrats, you won!";
+  }, [gameStatus])
 
   const restart = () => {
     updateMinesFound(0);
@@ -48,22 +55,18 @@ const Game = () => {
 
     const newBoard = createBoard(8, 8, 10);
     updateBoard(newBoard);
-    updateGameStatus({ inProgress: true, restarted: true});
+    updateGameStatus({ inProgress: false, restarted: true});
   }
 
+  const won = useCallback(() => {
+    const allMinesFound = minesFound === 10;
+    const allTilesRevealed = tilesRevealed === (board.length * board[0].length) - 10;
+    return allMinesFound || allTilesRevealed;
+  }, [minesFound, tilesRevealed, board])
   
   useEffect(() => {
-    const won = () => {
-      const allMinesFound = minesFound === 10;
-      const allTilesRevealed = tilesRevealed === (board.length * board[0].length) - 10;
-      return allMinesFound || allTilesRevealed;
-    }
-
-    if (won() && gameStatus.inProgress) {
-      updateGameStatus({ ...gameStatus, inProgress: false });
-      gameOverMessage.current = "Congrats, you won!";
-    }
-  }, [gameStatus, board, minesFound, tilesRevealed]);
+    if (won() && gameStatus.inProgress) handleWon();
+  }, [gameStatus, won, handleWon]);
 
   return (
     <>

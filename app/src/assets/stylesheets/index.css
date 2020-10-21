@@ -38,6 +38,7 @@ h1 {
   width: 40%;
   margin: 1rem 0;
   color: var(--primaryBlue);
+  background-color: var(--mediumGrey);
   font-weight: 600;
   padding: 1.25rem;
   border: 2px solid var(--white);
@@ -64,8 +65,10 @@ button:hover {
 /* Board */
 .board {
   border: 1px solid var(--primaryBlue);
+  border-radius: 1.5px;
   width: calc((2.2rem * 8) + 16px);
   margin: 0 auto;
+  box-shadow: 0px 0px 8px var(--primaryBlue);
 }
 
 .row {
@@ -86,6 +89,20 @@ button:hover {
   background-color: lightGrey;
 }
 
+.tile:hover {
+  background-color: rgb(197, 197, 197);
+}
+
 .revealed {
   background-color: white;
+}
+
+.revealed:hover {
+  background-color: white;
+}
+
+@media only screen and (max-width: 580px) {
+  .game-details {
+    width: 75%;
+  }
 }
