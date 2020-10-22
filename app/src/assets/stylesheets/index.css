@@ -1,15 +1,11 @@
 :root {
+  --primaryText: #15afd5;
   --primaryBackground: #1F1F1F;
-  --primaryBlack: #080808;
-  /* --lightGrey: #d3d3d3; */
-  --accent2: #808080;
   --secondaryBackground: #242424;
   --accent1: #FFFFFF;
-  --primaryText: #15afd5;
-  /* --darkBlue: #0F3D67; */
+  --accent2: #808080;
+  --primaryBlack: #080808;
   --mediumBlue: #4DB2D8;
-  /* --thirdBlue: #2D749B; */
-  /* --lightBlue: #60D5F0; */
 }
 
 body {
