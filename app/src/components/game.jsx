@@ -4,11 +4,6 @@ import BoardLayout from './board';
 import Counter from './counter';
 import Timer from './timer';
 
-// Is there a better way to store/handle the Board itself and it's functions? Originally
-// had Board class in separate file, but was having trouble updating it with Hooks. 
-// Refactored to just have util functions, which works, but means I have to pass around variables more
-// often, and also doesn't allow me to store instance variables on the class (i.e. rows, cols, # mines)
-
 const Game = () => {
   const [board, updateBoard] = useState(createBoard(8, 8, 10));
   const [minesFound, updateMinesFound] = useState(0);

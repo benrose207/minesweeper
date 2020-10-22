@@ -1,12 +1,13 @@
 :root {
-  --darkGrey: #1F1F1F;
+  --primaryBackground: #1F1F1F;
   --primaryBlack: #080808;
-  /* --lightGrey: rgba(64,66,69,.3); */
-  --mediumGrey: #242424;
-  --white: #FFFFFF;
-  --primaryBlue: #15afd5;
+  /* --lightGrey: #d3d3d3; */
+  --accent2: #808080;
+  --secondaryBackground: #242424;
+  --accent1: #FFFFFF;
+  --primaryText: #15afd5;
   /* --darkBlue: #0F3D67; */
-  /* --mediumBlue: #4DB2D8; */
+  --mediumBlue: #4DB2D8;
   /* --thirdBlue: #2D749B; */
   /* --lightBlue: #60D5F0; */
 }
@@ -14,7 +15,7 @@
 body {
   font-size: 16px;
   font-family: 'IBM Plex Sans', Arial, sans-serif;
-  background-color: var(--darkGrey);
+  background-color: var(--primaryBackground);
 }
 
 main {
@@ -25,7 +26,7 @@ main {
 
 h1 {
   font-size: 2rem;
-  color: var(--primaryBlue);
+  color: var(--primaryText);
   margin: 1rem 0;
   text-align: center;
 }
@@ -37,11 +38,11 @@ h1 {
   align-items: center;
   width: 40%;
   margin: 1rem 0;
-  color: var(--primaryBlue);
-  background-color: var(--mediumGrey);
+  color: var(--primaryText);
+  background-color: var(--secondaryBackground);
   font-weight: 600;
   padding: 1.25rem;
-  border: 2px solid var(--white);
+  border: 2px solid var(--accent1);
   border-radius: 0.5rem;
 }
 
@@ -58,18 +59,18 @@ button:hover {
 }
 
 .gameover-message {
-  color: var(--primaryBlue);
+  color: var(--primaryText);
   margin: 1.5rem 0;
   font-size: 1.75rem;
 }
 
 /* Board */
 .board {
-  border: 1px solid var(--primaryBlue);
+  border: 1px solid var(--mediumBlue);
   border-radius: 1.5px;
   width: calc((2.2rem * 8) + 16px);
   margin: 0 auto;
-  box-shadow: 0px 0px 8px var(--primaryBlue);
+  box-shadow: 0px 0px 8px var(--mediumBlue);
 }
 
 .row {
@@ -79,8 +80,8 @@ button:hover {
 .tile {
   border: 1px;
   border-style: outset;
-  border-bottom-color: var(--primaryBlue);
-  border-right-color: var(--primaryBlue);
+  border-bottom-color: var(--mediumBlue);
+  border-right-color: var(--mediumBlue);
   height: 2.2rem;
   width: 2.2rem;
   background-color: lightGrey;
@@ -132,4 +133,39 @@ button:hover {
   .game-details {
     width: 75%;
   }
+}
+
+/* Color Toggle */
+
+.slider-container {
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  background-color: var(--accent1);
+  height: 1.6rem;
+  width: 5rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+
+.slider-toggle {
+  height: 1.35rem;
+  width: 1.35rem;
+  border-radius: 50%;
+  background-color: var(--accent2);
+  margin: 2px;
+  transition: transform 0.3s;
+  transform: translateX(0);
+}
+
+.slider-on {
+  transform: translateX(3.42rem);
+}
+
+.slider-icon {
+  font-size: 1.25rem;
+  color: var(--accent1);
+  margin: 0 0.5rem;
 }

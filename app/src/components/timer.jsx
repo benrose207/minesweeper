@@ -10,9 +10,6 @@ const Timer = ({ gameStatus }) => {
     return `${newMin}:${newSec}`;
   }
 
-  // does this install and remove the setInterval on every re-render?
-  // why does this reset the time to 00 when the game is over but not restarted? Only happens when playing multiple games. On page refresh, the first game works perfectly.
-
   useEffect(() => {
     if (gameStatus.restarted) updateTime('00:00');
 
