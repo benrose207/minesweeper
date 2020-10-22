@@ -1,14 +1,14 @@
 :root {
   --darkGrey: #1F1F1F;
   --primaryBlack: #080808;
-  --lightGrey: rgba(64,66,69,.3);
+  /* --lightGrey: rgba(64,66,69,.3); */
   --mediumGrey: #242424;
   --white: #FFFFFF;
   --primaryBlue: #15afd5;
-  --darkBlue: #0F3D67;
-  --mediumBlue: #4DB2D8;
-  --thirdBlue: #2D749B;
-  --lightBlue: #60D5F0;
+  /* --darkBlue: #0F3D67; */
+  /* --mediumBlue: #4DB2D8; */
+  /* --thirdBlue: #2D749B; */
+  /* --lightBlue: #60D5F0; */
 }
 
 body {
@@ -54,6 +54,7 @@ button {
 
 button:hover {
   background-color: rgb(228, 228, 228);
+  box-shadow: 0px 0px 4px rgb(228, 228, 228);
 }
 
 .gameover-message {
@@ -76,7 +77,10 @@ button:hover {
 }
 
 .tile {
-  border: 1px solid var(--primaryBlue);
+  border: 1px;
+  border-style: outset;
+  border-bottom-color: var(--primaryBlue);
+  border-right-color: var(--primaryBlue);
   height: 2.2rem;
   width: 2.2rem;
   background-color: lightGrey;
@@ -117,6 +121,7 @@ button:hover {
 
 .revealed {
   background-color: white;
+  border-style: inset;
 }
 
 .revealed:hover {

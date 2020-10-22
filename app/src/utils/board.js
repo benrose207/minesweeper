@@ -54,7 +54,7 @@ const placeMines = (board, numMines) => {
 
     if (!randomTile.isMine) {
       randomTile.placeMine();
-      updateAdjacentCounts([randomX, randomY], board)
+      updateAdjacentCounts([randomX, randomY], board);
       mineCount++;
     }
   };

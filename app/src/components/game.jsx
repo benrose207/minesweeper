@@ -17,7 +17,7 @@ const Game = () => {
   const gameOverMessage = useRef(null);
 
   const updateGame = (tile, flagToggled) => {
-    if (!gameStatus.inProgress) updateGameStatus({ ...gameStatus, inProgress: true });
+    if (!gameStatus.inProgress) updateGameStatus({ inProgress: true, restarted: false });
 
     if (flagToggled) {
       handleFlagToggle(tile);
@@ -46,7 +46,7 @@ const Game = () => {
   const handleWon = useCallback(() => {
     updateGameStatus({ ...gameStatus, inProgress: false });
     gameOverMessage.current = "Congrats, you won!";
-  }, [gameStatus])
+  }, [gameStatus]);
 
   const restart = () => {
     updateMinesFound(0);
