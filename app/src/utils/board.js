@@ -69,11 +69,10 @@ export const createBoard = (rows, columns, numMines) => {
 
 export const exploreTiles = (tile, board) => {
   if (tile.revealed) return 0;
-  
+
   let numTilesExplored = 1;
   tile.revealed = true;
 
-  if (tile.isMine || tile.numAdjMines > 0) return numTilesExplored;
   const queue = [tile];
 
   while (queue.length) {

@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createBoard, exploreTiles, revealBoard } from '../utils/board';
 import BoardLayout from './board';
-import Counter from './counter';
-import Timer from './timer';
+import GameDetails from './game_details';
 
 const Game = () => {
   const [board, updateBoard] = useState(createBoard(8, 8, 10));
@@ -65,11 +64,7 @@ const Game = () => {
 
   return (
     <>
-      <div className="game-details">
-        <Counter minesFound={minesFound}/>
-        <button onClick={restart}>Restart</button>
-        <Timer gameStatus={gameStatus} />
-      </div>
+      <GameDetails minesFound={minesFound} restart={restart} gameStatus={gameStatus}/>
       <BoardLayout board={board} update={updateGame} />
       <p className="gameover-message">{gameOverMessage.current}</p>
     </>
