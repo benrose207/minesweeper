@@ -68,6 +68,8 @@ export const createBoard = (rows, columns, numMines) => {
 };
 
 export const exploreTiles = (tile, board) => {
+  if (tile.revealed) return 0;
+  
   let numTilesExplored = 1;
   tile.revealed = true;
 
