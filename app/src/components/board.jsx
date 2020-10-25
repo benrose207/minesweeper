@@ -10,8 +10,21 @@ const BoardLayout = ({ board, update }) => {
     </div>
   ));
 
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    let flagToggled = false;
+    if (e.type === 'contextmenu') flagToggled = true;
+
+    const pos = e.target.dataset.pos || e.target.parentElement.parentElement.dataset.pos;
+    const [x, y] = pos.split(',');
+    const tile = board[x][y];
+
+    update(tile, flagToggled);
+  }
+
   return (
-    <div className="board">
+    <div className="board" onClick={handleClick} onContextMenu={handleClick}>
       {tiles}
     </div>
   );
