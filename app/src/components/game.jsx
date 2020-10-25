@@ -4,7 +4,8 @@ import BoardLayout from './board';
 import GameDetails from './game_details';
 
 const Game = () => {
-  const [board, updateBoard] = useState(createBoard(8, 8, 10));
+  const [numMines, updateNumMines] = useState(10);
+  const [board, updateBoard] = useState(createBoard(8, 8, numMines));
   const [minesFound, updateMinesFound] = useState(0);
   const [tilesRevealed, updateTilesRevealed] = useState(0);
   const [gameStatus, updateGameStatus] = useState({ inProgress: false, restarted: false });
@@ -47,16 +48,16 @@ const Game = () => {
     updateTilesRevealed(0);
     gameOverMessage.current = null;
 
-    const newBoard = createBoard(8, 8, 10);
+    const newBoard = createBoard(8, 8, numMines);
     updateBoard(newBoard);
     updateGameStatus({ inProgress: false, restarted: true});
   }
 
   const won = useCallback(() => {
-    const allMinesFound = minesFound === 10;
-    const allTilesRevealed = tilesRevealed === (board.length * board[0].length) - 10;
+    const allMinesFound = minesFound === numMines;
+    const allTilesRevealed = tilesRevealed === (board.length * board[0].length) - numMines;
     return allMinesFound || allTilesRevealed;
-  }, [minesFound, tilesRevealed, board])
+  }, [minesFound, tilesRevealed, board, numMines])
   
   useEffect(() => {
     if (won() && gameStatus.inProgress) handleWon();

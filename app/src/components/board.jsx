@@ -12,6 +12,7 @@ const BoardLayout = ({ board, update }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    if (e.target.classList.contains('board')) return;
 
     let flagToggled = false;
     if (e.type === 'contextmenu') flagToggled = true;
