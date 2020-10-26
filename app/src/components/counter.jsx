@@ -1,7 +1,8 @@
 import React from 'react';
 
-const Counter = ({ minesFound }) => {
-  const formattedNum = !minesFound ? 10 : `0${10 - minesFound}`
+const Counter = ({ minesFound, numMines }) => {
+  const minesLeft = numMines - minesFound;
+  const formattedNum = minesLeft >= 10 ? minesLeft : `0${minesLeft}`;
 
   return (
     <div>
