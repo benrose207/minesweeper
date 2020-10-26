@@ -65,7 +65,7 @@ const Game = () => {
 
   return (
     <>
-      <GameDetails minesFound={minesFound} restart={restart} gameStatus={gameStatus}/>
+      <GameDetails minesFound={minesFound} restart={restart} gameStatus={gameStatus} numMines={numMines}/>
       <BoardLayout board={board} update={updateGame} />
       <p className="gameover-message">{gameOverMessage.current}</p>
     </>
