@@ -4,8 +4,6 @@ import Timer from './timer';
 
 const GameDetails = ({ minesFound, numMines, gameStatus, restart, updateLevel, level }) => {
 
-  // const [currentlevel, updateLevel] = useState('easy');
-
   const handleLevelChange = (e) => {
     let approveRestart;
     if (gameStatus.inProgress) {
@@ -17,15 +15,6 @@ const GameDetails = ({ minesFound, numMines, gameStatus, restart, updateLevel, l
       updateLevel(newLevel);
     }
   }
-
-  // const updateGame = useCallback(() => {
-  //   updateNumMines(levels[level].numMines);
-  //   restart(levels[level].rows, levels[level].cols, levels[level].numMines);
-  // }, [level]);
-
-  // useEffect(() => {
-  //   updateGameLevel(levels[level]);
-  // }, [level]);
 
   return (
     <div className="game-details">

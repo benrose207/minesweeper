@@ -68,8 +68,11 @@ const Game = () => {
   
   useEffect(() => {
     if (won() && gameStatus.inProgress) handleWon();
-    // updateGameLevel();
-  }, [gameStatus, won, handleWon, updateGameLevel]);
+  }, [gameStatus, won, handleWon]);
+
+  useEffect(() => {
+    updateGameLevel();
+  }, [updateGameLevel]);
 
   return (
     <>
