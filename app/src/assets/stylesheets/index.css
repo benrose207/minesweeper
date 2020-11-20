@@ -163,11 +163,12 @@ button:hover {
 /* Level Drop-down */
 
 select {
-    padding: 0.5rem 0.75rem;
+    padding: 0.55rem 0.75rem;
     border-radius: 0.25rem;
     background-color: lightgray;
     color: var(--primaryBlack);
     cursor: pointer;
+    border: none;
 }
 
 select:hover {
