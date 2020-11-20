@@ -5,7 +5,6 @@ import GameDetails from './game_details';
 import levels from '../utils/levels';
 
 const Game = () => {
-  // const [numMines, updateNumMines] = useState(10);
   const [level, updateLevel] = useState('easy');
   const [board, updateBoard] = useState(createBoard(levels[level].rows, levels[level].cols, levels[level].numMines));
   const [minesFound, updateMinesFound] = useState(0);
